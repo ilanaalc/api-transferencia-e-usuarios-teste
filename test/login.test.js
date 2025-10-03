@@ -1,11 +1,13 @@
 const request = require('supertest');
-const app = require('../app.js');
+//const app = require('../app.js');
 const { expect } = require('chai');
+require('dotenv').config();
+
 
 describe('Login de Usuário', () => {
   beforeEach(async () => {
     // Registra o usuário antes de cada teste
-    await request(app)
+    await request(process.env.BASE_URL_REST)
       .post('/users/register')
       .send({
         username: 'luciana',
@@ -15,7 +17,7 @@ describe('Login de Usuário', () => {
   });
 
   it('Deve realizar login com sucesso e retornar token', async () => {
-    const response = await request(app)
+    const response = await request(process.env.BASE_URL_REST)
       .post('/users/login')
       .send({
         username: 'luciana',
@@ -27,7 +29,7 @@ describe('Login de Usuário', () => {
   });
 
   it('Deve falhar ao tentar login com credenciais inválidas', async () => {
-    const response = await request(app)
+    const response = await request(process.env.BASE_URL_REST)
       .post('/users/login')
       .send({
         username: 'luciana',
