@@ -7,7 +7,6 @@ export let options = {
 };
 
 export default function () {
-  const url = "http://localhost:3000/users/register";
   const payload = JSON.stringify({
     username: `user_${Math.random()}`, // gera username único
     password: "123456",
@@ -18,7 +17,7 @@ export default function () {
     headers: { "Content-Type": "application/json" },
   };
 
-  let res = http.post(url, payload, params);
+  let res = http.post(process.env.BASE_URL_REST, payload, params);
 
   check(res, {
     "status é 201": (r) => r.status === 201,

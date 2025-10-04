@@ -2,12 +2,11 @@ import http from "k6/http";
 import { check, sleep } from "k6";
 
 export let options = {
-  vus: 10,          // 20 usuários virtuais
-  duration: "10s",  // durante 15 segundos
+  vus: 20,          // 20 usuários virtuais
+  duration: "15s",  // durante 15 segundos
 };
 
 export default function () {
-  const url = "http://localhost:3000/users/login";
 
   const payload = JSON.stringify({
     username: "luciana",
@@ -18,7 +17,7 @@ export default function () {
     headers: { "Content-Type": "application/json" },
   };
 
-  let res = http.post(url, payload, params);
+  let res = http.post(process.env.BASE_URL_REST, payload, params);
 
   check(res, {
     "status é 200": (r) => r.status === 200,
