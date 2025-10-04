@@ -5,38 +5,40 @@ require('dotenv').config();
 
 
 describe('Login de Usuário', () => {
-  beforeEach(async () => {
-    // Registra o usuário antes de cada teste
-    await request(process.env.BASE_URL_REST)
-      .post('/users/register')
-      .send({
-        username: 'luciana',
-        password: '123456',
-        favorecidos: ['mateus', 'joão']
-      });
-  });
+  describe('POST /users/login', () => {
+    beforeEach(async () => {
+      // Registra o usuário antes de cada teste
+      await request(process.env.BASE_URL)
+        .post('/users/register')
+        .send({
+          username: 'luciana',
+          password: '123456',
+          favorecidos: ['mateus', 'joão']
+        });
+    });
 
-  it('Deve realizar login com sucesso e retornar token', async () => {
-    const response = await request(process.env.BASE_URL_REST)
-      .post('/users/login')
-      .send({
-        username: 'luciana',
-        password: '123456'
-      });
+    it('Deve realizar login com sucesso e retornar token', async () => {
+      const response = await request(process.env.BASE_URL)
+        .post('/users/login')
+        .send({
+          username: 'luciana',
+          password: '123456'
+        });
 
-    expect(response.status).to.equal(200);
-    expect(response.body).to.have.property('token');
-  });
+      expect(response.status).to.equal(200);
+      expect(response.body).to.have.property('token');
+    });
 
-  it('Deve falhar ao tentar login com credenciais inválidas', async () => {
-    const response = await request(process.env.BASE_URL_REST)
-      .post('/users/login')
-      .send({
-        username: 'luciana',
-        password: 'senhaErrada'
-      });
+    it('Deve falhar ao tentar login com credenciais inválidas', async () => {
+      const response = await request(process.env.BASE_URL)
+        .post('/users/login')
+        .send({
+          username: 'luciana',
+          password: 'senhaErrada'
+        });
 
-    expect(response.status).to.equal(400);
-    expect(response.body).to.have.property('error');
+      expect(response.status).to.equal(400);
+      expect(response.body).to.have.property('error');
+    });
   });
 });
